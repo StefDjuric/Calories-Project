@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Calories.Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Calories.Core.Interfaces
 {
     public interface ITokenService
     {
-        public Task<string> CreateAccessToken(IdentityUser user);
+        public Task<string> CreateAccessTokenAsync(User user);
     }
 }

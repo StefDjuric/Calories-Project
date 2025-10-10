@@ -1,7 +1,14 @@
-﻿using Calories.Entities.Models;
+﻿using Calories.Core.Helpers;
+using Calories.Core.Interfaces;
+using Calories.Core.Repositories;
+using Calories.Core.Services;
+using Calories.Entities.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Calories.API.Application_Exstensions
 {
@@ -14,7 +21,12 @@ namespace Calories.API.Application_Exstensions
                 options.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 8;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.User.RequireUniqueEmail = true;
+            })
                 .AddEntityFrameworkStores<CaloriesDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -46,10 +58,26 @@ namespace Calories.API.Application_Exstensions
                 });
             });
             services.AddCors();
-            services.AddAuthentication();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IMealRepository, MealRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    var tokenKey = config["JwtToken:TokenKey"] ?? throw new Exception("No token key found.");
+
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
             services.AddAuthorization();
             services.AddControllers();
-            services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(cfg => { }, typeof(MapperProfiles).Assembly);
             return services;
         }
     }
