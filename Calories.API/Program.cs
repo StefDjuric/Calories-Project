@@ -1,10 +1,11 @@
 using Calories.API.Application_Exstensions;
+using System.Threading.Tasks;
 
 namespace Calories.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddApplicationServices(builder.Configuration);
@@ -14,6 +15,19 @@ namespace Calories.API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                // Creating test users if needed
+                using(var scope = app.Services.CreateScope())
+                {
+                    var serviceProvider = scope.ServiceProvider;
+                    try
+                    {
+                        await SeedDb.SeedRolesAndUsersAsync(serviceProvider);
+                    }catch (Exception ex)
+                    {
+                        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "An error occurred while seeding the database");
+                    }
+                }
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }

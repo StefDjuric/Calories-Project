@@ -1,6 +1,7 @@
 ﻿using Calories.Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Calories.API.Application_Exstensions
 {
@@ -10,10 +11,10 @@ namespace Calories.API.Application_Exstensions
         {
             services.AddDbContext<CaloriesDbContext>(options =>
             {
-                options.UseSqlite("Data Source=calories.db");
+                options.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<CaloriesDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -48,7 +49,7 @@ namespace Calories.API.Application_Exstensions
             services.AddAuthentication();
             services.AddAuthorization();
             services.AddControllers();
-
+            services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
             return services;
         }
     }

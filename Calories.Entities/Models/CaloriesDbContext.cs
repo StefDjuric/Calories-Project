@@ -9,9 +9,20 @@ using System.Threading.Tasks;
 
 namespace Calories.Entities.Models
 {
-    public class CaloriesDbContext : IdentityDbContext<IdentityUser>
+    public class CaloriesDbContext : IdentityDbContext<User>
     {
-        public CaloriesDbContext(DbContextOptions<CaloriesDbContext> options) : base(options){ 
+        public CaloriesDbContext(DbContextOptions<CaloriesDbContext> options) : base(options){ }
+
+        public DbSet<Meal> Meals { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Meal>()
+                .HasOne(m => m.User)
+                .WithMany(u => u.Meals)
+                .HasForeignKey(m => m.UserId);
         }
     }
 }
