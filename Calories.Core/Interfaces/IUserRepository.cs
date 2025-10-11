@@ -9,6 +9,6 @@ namespace Calories.Core.Interfaces
 {
     public interface IUserRepository
     {
-        public Task<IEnumerable<UserDTO>> GetAllUsers();
+        public Task<IEnumerable<UserDTO>> GetAllUsersAsync();
     }
 }

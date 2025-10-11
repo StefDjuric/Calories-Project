@@ -17,7 +17,7 @@ namespace Calories.Core.Repositories
     {
         private readonly IMapper _mapper = mapper;
         private readonly UserManager<User> _userManager = userManager;
-        public async Task<IEnumerable<UserDTO>> GetAllUsers()
+        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
         {
             return await _userManager.Users
                 .ProjectTo<UserDTO>(_mapper.ConfigurationProvider)

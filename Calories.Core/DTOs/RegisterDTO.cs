@@ -16,5 +16,6 @@ namespace Calories.Core.DTOs
         [Required]
         [StringLength(50, MinimumLength = 8)]
         public required string Password { get; set; }
+        public string? Role { get; set; }
     }
 }
