@@ -21,8 +21,9 @@ namespace Calories.API.Controllers
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IMapper _mapper = mapper;
 
-        [HttpGet("{userId}", Name = "GetUserById")] // api/<Users>/id
-        public async Task<ActionResult<UserDTO>> GetUserById(string userId)
+        [HttpGet("admin/{userId}", Name = "GetUserById")] // api/<Users>/admin/id
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
+        public async Task<ActionResult<UserDTO?>> GetUserById(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -34,7 +35,7 @@ namespace Calories.API.Controllers
             return Ok(_mapper.Map<UserDTO>(user));
         }
 
-        [HttpGet] // api/<Users>
+        [HttpGet("admin")] // api/<Users>/admin
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
@@ -42,7 +43,7 @@ namespace Calories.API.Controllers
             return Ok(users);
         }
 
-        [HttpPost] // api/<Users>
+        [HttpPost("admin")] // api/<Users>/admin
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
         public async Task<ActionResult<UserDTO>> CreateUser(RegisterDTO registerDTO)
         {
@@ -61,12 +62,14 @@ namespace Calories.API.Controllers
             await _userManager.AddToRoleAsync(user, registerDTO.Role);
 
             user.ExpectedCaloriesPerDay = 2000;
+            await _userManager.UpdateAsync(user);
+
             var userDto = _mapper.Map<UserDTO>(user);
 
             return CreatedAtRoute("GetUserById", new { userId = user.Id }, userDto);
         }
 
-        [HttpPut("{userId}")]
+        [HttpPut("admin/{userId}")] // api/<Users>/admin/userId
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
         public async Task<ActionResult> AdminUpdateUser(UserDTO userDto, [FromRoute]string userId)
         {
@@ -76,6 +79,8 @@ namespace Calories.API.Controllers
             
             user.UserName = userDto.UserName ?? user.UserName;
             user.Email = userDto.Email ?? user.Email;
+            user.ExpectedCaloriesPerDay = userDto.ExpectedCaloriesPerDay ?? user.ExpectedCaloriesPerDay;
+
             if (userDto.UpdatedPassword != null)
             {
                 var removeResult = await _userManager.RemovePasswordAsync(user);
@@ -92,7 +97,7 @@ namespace Calories.API.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut] // api/<Users>
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
         public async Task<ActionResult> EditUserData(UserDTO userDto)
         {
@@ -103,7 +108,8 @@ namespace Calories.API.Controllers
 
             user.UserName = userDto.UserName ?? user.UserName;
             user.Email = userDto.Email ?? user.Email;
-            user.ExpectedCaloriesPerDay = userDto.ExpectedCaloriesPerDay ?? 2000;
+            user.ExpectedCaloriesPerDay = userDto.ExpectedCaloriesPerDay ?? user.ExpectedCaloriesPerDay;
+
             if (userDto.CurrentPassword != null && userDto.UpdatedPassword != null)
             {
                 var result = await _userManager.ChangePasswordAsync(user, userDto.CurrentPassword, userDto.UpdatedPassword);
@@ -113,6 +119,19 @@ namespace Calories.API.Controllers
             var updateResult = await _userManager.UpdateAsync(user);
 
             if (!updateResult.Succeeded) return BadRequest(updateResult.Errors);
+
+            return NoContent();
+        }
+
+        [HttpDelete("admin/{userId}")] // api/<Users>/admin/userId
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
+        public async Task<ActionResult> AdminDeleteUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null) return NotFound();
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded) return BadRequest(result.Errors);
 
             return NoContent();
         }

@@ -1,4 +1,5 @@
 using Calories.API.Application_Exstensions;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using System.Threading.Tasks;
 
 namespace Calories.API
@@ -45,6 +46,16 @@ namespace Calories.API
 
 
             app.MapControllers();
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "../Calories.Application/client";
+
+                if (app.Environment.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
 
             app.Run();
         }
