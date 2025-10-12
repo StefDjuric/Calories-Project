@@ -1,1 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap");
+
+:root {
+  --primary-teal: #4ecdc4;
+  --primary-accent: #ff6b6b;
+  --background-color: #f7fff7;
+  --text-primary: #1a1a1a;
+  --text-muted: #6b7280;
+
+  --font-primary: "Cabin";
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-primary);
+  color: var(--text-primary);
+  background-color: var(--background-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main-btn {
+  font-family: var(--font-primary) !important;
+  font-weight: 400 !important;
+  color: var(--background-color) !important;
+  background-color: var(--primary-teal) !important;
+  border: none !important;
+  border-radius: 15px !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease-out !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  text-align: center !important;
+  min-width: 141px;
+  min-height: 43px;
+}
+
+.main-btn:hover {
+  background-color: #094a46 !important;
+}
+
+.secondary-btn {
+  font-family: var(--font-primary) !important;
+  font-weight: 400 !important;
+  color: var(--background-color) !important;
+  background-color: var(--primary-accent) !important;
+  border: none !important;
+  border-radius: 15px !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease-out !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  text-align: center !important;
+  min-width: 141px;
+  min-height: 43px;
+}
+
+.secondary-btn:hover {
+  background-color: #951212 !important;
+}
