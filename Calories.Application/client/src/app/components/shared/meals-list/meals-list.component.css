@@ -1,0 +1,15 @@
+.meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.meal-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  align-items: center;
+}

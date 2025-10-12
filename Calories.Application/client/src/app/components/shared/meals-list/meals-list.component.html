@@ -1,0 +1,15 @@
+<div class="meals-list">
+  @for (meal of meals; track $index) {
+  <div class="meal-card">
+    <div class="meal-info">
+      <h4>{{ meal.mealDescription }}</h4>
+      <p>{{ meal.mealCalories }}</p>
+      <p>{{ meal.mealDate | date }} - {{ meal.mealTime }}</p>
+    </div>
+    <div class="meal-actions">
+      <button (click)="onEdit(meal.id)" class="main-btn">Edit</button>
+      <button (click)="onDelete(meal.id)" class="secondary-btn">Delete</button>
+    </div>
+  </div>
+  }
+</div>
