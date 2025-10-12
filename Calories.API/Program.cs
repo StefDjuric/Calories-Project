@@ -47,15 +47,17 @@ namespace Calories.API
 
             app.MapControllers();
 
-            app.UseSpa(spa =>
+            if (!app.Environment.IsProduction())
             {
-                spa.Options.SourcePath = "../Calories.Application/client";
-
-                if (app.Environment.IsDevelopment())
+                app.MapWhen(ctx => !ctx.Request.Path.StartsWithSegments("/api"), spaApp =>
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+                    spaApp.UseSpa(spa =>
+                    {
+                        spa.Options.SourcePath = "../Calories.Application/client";
+                        spa.UseAngularCliServer(npmScript: "start");
+                    });
+                });
+            }
 
             app.Run();
         }

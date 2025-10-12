@@ -1,1 +1,58 @@
-<p>login works!</p>
+<div class="signup-container">
+  <div class="overlay">
+    <div class="form-card">
+      <h2>Login</h2>
+
+      <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+        <div class="form-group">
+          <label for="emailOrUsername">Enter email or username</label>
+          <input
+            type="text"
+            name="emailOrUsername"
+            id="emailOrUsername"
+            [(ngModel)]="model.emailOrUsername"
+            #emailOrUsername="ngModel"
+            required
+            placeholder="Enter your email or username"
+          />
+          @if(emailOrUsername.invalid && emailOrUsername.touched){
+          <div class="error">
+            @if (emailOrUsername.errors?.['required']) {
+            <span class="error">Email or username is required</span>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input
+            type="password"
+            id="login-password"
+            name="login-password"
+            [(ngModel)]="model.password"
+            #password="ngModel"
+            required
+            placeholder="Enter your password"
+          />
+          @if(password.invalid && password.touched){
+          <div class="error">
+            @if(password.errors?.['required']){
+            <span class="error">Password is required</span>
+            }
+          </div>
+          }
+        </div>
+
+        <button type="submit" class="main-btn" [disabled]="loginForm.invalid">
+          Log In
+        </button>
+      </form>
+
+      <p class="redirect">
+        Don't have an account?
+        <a routerLink="/signup">Signup here</a>
+      </p>
+    </div>
+  </div>
+</div>
