@@ -1,15 +1,113 @@
 <div class="meals-list">
-  @for (meal of meals; track $index) {
+  @if (meals.length === 0) {
+  <div class="meals-empty">
+    <p>No meals created</p>
+  </div>
+  } @else { @for (meal of meals; track $index) {
   <div class="meal-card">
     <div class="meal-info">
       <h4>{{ meal.mealDescription }}</h4>
-      <p>{{ meal.mealCalories }}</p>
+      <p>{{ meal.mealCalories }}kcal</p>
       <p>{{ meal.mealDate | date }} - {{ meal.mealTime }}</p>
     </div>
     <div class="meal-actions">
-      <button (click)="onEdit(meal.id)" class="main-btn">Edit</button>
+      <button (click)="openEditModal(meal)" class="main-btn">Edit</button>
       <button (click)="onDelete(meal.id)" class="secondary-btn">Delete</button>
     </div>
   </div>
-  }
+  } }
 </div>
+
+@if(selectedMeal){
+<div class="modal">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Edit Meal</h3>
+    <form #editForm="ngForm" (ngSubmit)="saveEdit()">
+      <div class="form-group">
+        <label for="desc">Meal description</label>
+        <input
+          type="text"
+          name="desc"
+          id="desc"
+          [(ngModel)]="selectedMeal.mealDescription"
+          #description="ngModel"
+          required
+        />
+        @if (description.invalid && description.touched) {
+        <div class="error">
+          @if(description.errors?.['required']){
+          <span>Meal description field is required</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="cals">Meal calories</label>
+        <input
+          type="number"
+          name="cals"
+          id="cals"
+          [(ngModel)]="selectedMeal.mealCalories"
+          #calories="ngModel"
+          required
+          min="1"
+        />
+        @if (calories.invalid && calories.touched) {
+        <div class="error">
+          @if(calories.errors?.['required']){
+          <span>Meal calories field is required</span>
+          } @else if(calories.errors?.['min']){
+          <span>Meal should have at least 1 calorie</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="date">Meal Date</label>
+        <input
+          type="date"
+          name="date"
+          id="date"
+          [(ngModel)]="selectedMeal.mealDate"
+          #date="ngModel"
+          required
+        />
+        @if (date.invalid && date.touched) {
+        <div class="error">
+          @if(date.errors?.['required']){
+          <span>Meal date field is required</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="time">Meal Time</label>
+        <input
+          type="time"
+          name="time"
+          id="time"
+          [(ngModel)]="selectedMeal.mealTime"
+          #time="ngModel"
+          required
+        />
+        @if (time.invalid && time.touched) {
+        <div class="error">
+          @if(time.errors?.['required']){
+          <span>Meal time field is required</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="main-btn" [disabled]="editForm.invalid">
+          Save
+        </button>
+        <button type="button" class="secondary-btn" (click)="closeEditModal()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}

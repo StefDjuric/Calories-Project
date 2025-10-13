@@ -21,10 +21,13 @@ namespace Calories.API.Controllers
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IMapper _mapper = mapper;
 
-        [HttpGet("admin/{userId}", Name = "GetUserById")] // api/<Users>/admin/id
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
+        [HttpGet("{userId}", Name = "GetUserById")] // api/<Users>/userId
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<UserDTO?>> GetUserById(string userId)
         {
+            if (User.IsInRole("User") && userId != User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                return Forbid();
+
             var user = await _userManager.FindByIdAsync(userId);
 
             if(user == null)
@@ -137,3 +140,4 @@ namespace Calories.API.Controllers
         }
     }
 }
+

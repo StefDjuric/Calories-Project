@@ -127,18 +127,21 @@ namespace Calories.API.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User, Admin")]
         public async Task<ActionResult> EditMeal([FromRoute]int id, [FromBody]MealDTO mealDto)
         {
-            var meal = await _mealRepository.GetMealByIdAsync(id);
+            var meal = await _mealRepository.GetMealEntityByIdAsync(id);
 
             if (meal == null) return NotFound();
 
             if (User.IsInRole("User") && meal.UserId != User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
                 return Forbid();
 
-            meal.MealDate = mealDto.MealDate ?? meal.MealDate;
-            meal.MealTime = mealDto.MealTime ?? meal.MealTime;
-            meal.MealDescription = mealDto.MealDescription ?? meal.MealDescription;
-            if (mealDto.MealCalories <= 0) return BadRequest("Meal can not have 0 or less calories");
-            meal.MealCalories = mealDto.MealCalories ?? meal.MealCalories;
+            if (mealDto.MealDate.HasValue) meal.MealDate = mealDto.MealDate.Value;
+            if (mealDto.MealTime.HasValue) meal.MealTime = mealDto.MealTime.Value;
+            if (!string.IsNullOrEmpty(mealDto.MealDescription)) meal.MealDescription = mealDto.MealDescription;
+            if (mealDto.MealCalories.HasValue)
+            {
+                if (mealDto.MealCalories <= 0) return BadRequest("Meal cannot have 0 or less calories.");
+                meal.MealCalories = mealDto.MealCalories.Value;
+            }
 
             if (!await _mealRepository.SaveChangesAsync()) return BadRequest("Could not update meal.");
 

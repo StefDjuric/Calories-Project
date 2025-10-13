@@ -1,0 +1,105 @@
+.dashboard-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #ffffffcc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.actions {
+  margin: 1rem 0;
+}
+
+.filter-container {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.filter-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.filter-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
+
+.calories-display {
+  padding: 16px 24px;
+  border-radius: 8px;
+  margin: 16px 0;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.calories-display h3 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.calories-info {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.calories-display.under {
+  background-color: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+}
+
+.calories-display.under h3 {
+  color: #155724;
+}
+
+.calories-display.over {
+  background-color: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.calories-display.over h3 {
+  color: #721c24;
+}
+
+.calories-display.neutral {
+  background-color: #e7f3ff;
+  border-color: #0066cc;
+  color: #004085;
+}
+
+.calories-display.neutral h3 {
+  color: #004085;
+}

@@ -54,5 +54,11 @@ namespace Calories.Core.Repositories
         {
             return await _dbContext.SaveChangesAsync() > 0;
         }
+
+        public async Task<Meal?> GetMealEntityByIdAsync(int id)
+        {
+            return await _dbContext.Meals
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

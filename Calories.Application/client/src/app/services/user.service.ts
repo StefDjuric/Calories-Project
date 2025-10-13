@@ -11,7 +11,7 @@ export class UserService {
   private baseUrl = environment.baseUrl;
 
   getUserById(userId: string) {
-    return this.http.get<User>(`${this.baseUrl}/users/admin/${userId}`);
+    return this.http.get<User>(`${this.baseUrl}/users/${userId}`);
   }
 
   getAllUsers() {

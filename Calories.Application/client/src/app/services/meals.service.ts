@@ -47,7 +47,7 @@ export class MealsService {
     return this.http.post<Meal>(`${this.baseUrl}/meals/admin/${userId}`, model);
   }
 
-  editMeal(mealId: number, model: Meal) {
+  editMeal(mealId: number, model: any) {
     return this.http.put<void>(`${this.baseUrl}/meals/${mealId}`, model);
   }
 

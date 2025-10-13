@@ -2,7 +2,7 @@ export interface User {
   id?: string;
   userName?: string;
   email?: string;
-  ExpectedCaloriesPerDay?: number;
+  expectedCaloriesPerDay?: number;
   currentPassword?: string;
   updatedPassword?: string;
 }

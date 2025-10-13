@@ -1,5 +1,6 @@
 ﻿using Calories.Core.DTOs;
 using Calories.Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -17,5 +18,6 @@ namespace Calories.Core.Interfaces
         public Task AddMealAsync(Meal meal);
         public void DeleteMeal(Meal meal);
         public Task<bool> SaveChangesAsync();
+        public Task<Meal?> GetMealEntityByIdAsync(int id);
     }
 }

@@ -30,7 +30,7 @@ export class LoginComponent {
     this.accountService.login(this.model).subscribe({
       next: (_) => {
         if (this.accountService.getRoleFromToken() === 'User')
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/user-dashboard');
 
         this.toastr.success('Successfully logged in');
       },

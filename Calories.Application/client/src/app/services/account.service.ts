@@ -16,7 +16,7 @@ export class AccountService {
   private baseUrl = environment.baseUrl;
   private toastr = inject(ToastrService);
   private router = inject(Router);
-  accessToken = signal<string | null>(null);
+  accessToken = signal<string | null>(localStorage.getItem('accessToken'));
 
   login(model: LoginModel) {
     return this.http
@@ -63,7 +63,7 @@ export class AccountService {
   }
 
   getUserIdFromToken(): string | null {
-    const token = this.accessToken();
+    const token = this.accessToken() || localStorage.getItem('accessToken');
     if (token) {
       const decodedToken = this.decodeJwtToken(token);
       return decodedToken?.nameid || null;
@@ -72,7 +72,7 @@ export class AccountService {
   }
 
   getUsernameFromToken(): string | null {
-    const token = this.accessToken();
+    const token = this.accessToken() || localStorage.getItem('accessToken');
     if (token) {
       const decodedToken = this.decodeJwtToken(token);
       return decodedToken?.unique_name || null;
@@ -81,7 +81,7 @@ export class AccountService {
   }
 
   getRoleFromToken(): string | null {
-    const token = this.accessToken();
+    const token = this.accessToken() || localStorage.getItem('accessToken');
     if (token) {
       const decodedToken = this.decodeJwtToken(token);
       return decodedToken?.role || null;
