@@ -9,11 +9,18 @@ import { MealsListComponent } from '../shared/meals-list/meals-list.component';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { CreateMealModalComponent } from '../shared/create-meal-modal/create-meal-modal.component';
+import { EditUserByUserModalComponent } from '../shared/edit-user-by-user-modal/edit-user-by-user-modal.component';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [MealsListComponent, FormsModule, NgClass, CreateMealModalComponent],
+  imports: [
+    MealsListComponent,
+    FormsModule,
+    NgClass,
+    CreateMealModalComponent,
+    EditUserByUserModalComponent,
+  ],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.css',
 })
@@ -27,6 +34,7 @@ export class UserDashboardComponent implements OnInit {
   meals = signal<Meal[]>([]);
   totalCalories = signal<number>(0);
   isModalOpen: boolean = false;
+  isEditUserModalOpen: boolean = false;
   mealModel: Meal = {
     id: 0,
     mealCalories: 0,
@@ -39,6 +47,13 @@ export class UserDashboardComponent implements OnInit {
     toDate: '',
     fromTime: '',
     toTime: '',
+  };
+  editUserModel: User = {
+    userName: '',
+    email: '',
+    currentPassword: '',
+    updatedPassword: '',
+    expectedCaloriesPerDay: this.user?.expectedCaloriesPerDay,
   };
   filteredCalories = signal<number>(0);
   isFiltered = signal<boolean>(false);
@@ -54,6 +69,11 @@ export class UserDashboardComponent implements OnInit {
       this.userService.getUserById(userId).subscribe({
         next: (data) => {
           this.user = data;
+          this.editUserModel = {
+            ...data,
+            currentPassword: '',
+            updatedPassword: '',
+          };
         },
       });
     }
@@ -164,6 +184,14 @@ export class UserDashboardComponent implements OnInit {
     this.isModalOpen = false;
   }
 
+  openEditUserModal() {
+    this.isEditUserModalOpen = true;
+  }
+
+  closeEditUserModal() {
+    this.isEditUserModalOpen = false;
+  }
+
   saveCreateMeal(mealData: any) {
     this.mealService.userCreateMeal(mealData).subscribe({
       next: (_) => {
@@ -188,5 +216,23 @@ export class UserDashboardComponent implements OnInit {
     }
     const d = new Date(time);
     return d.toTimeString().slice(0, 5);
+  }
+
+  updateUser(userData: any) {
+    if (!userData.updatedPassword) {
+      userData.updatedPassword = null;
+    }
+    if (!userData.currentPassword) {
+      userData.currentPassword = null;
+    }
+
+    this.userService.editUserData(userData).subscribe({
+      next: (_) => {
+        this.toastr.success('Successfully edited user.');
+        this.loadUser();
+        this.closeEditUserModal();
+      },
+      error: (err) => this.toastr.error(err.error[0].description),
+    });
   }
 }

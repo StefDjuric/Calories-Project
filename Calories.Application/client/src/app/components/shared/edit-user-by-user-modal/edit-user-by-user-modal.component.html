@@ -1,0 +1,125 @@
+@if(isOpen){
+<div class="modal">
+  <div class="modal-content">
+    <h3>Edit User</h3>
+    <form (ngSubmit)="saveUser()" #userForm="ngForm" novalidate>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="edit-modal-username"
+          [(ngModel)]="editUserModel.userName"
+          #username="ngModel"
+          required
+          minlength="3"
+        />
+        @if(username.invalid && username.touched){
+        <div class="error">
+          @if(username.errors?.['required']){
+          <span>Username is required</span>
+          } @else if (username.errors?.['minlength']) {
+          <span>Username should be at least 3 characters long</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="edit-modal-email"
+          [(ngModel)]="editUserModel.email"
+          #email="ngModel"
+          required
+          email
+        />
+        @if(email.invalid && email.touched){
+        <div class="error">
+          @if(email.errors?.['required']){
+          <span>Email is required</span>
+          } @else if (email.errors?.['email']) {
+          <span>Email is invalid</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="password"
+          >Current password (Optionally change password)</label
+        >
+        <input
+          type="password"
+          name="password"
+          id="edit-modal-password"
+          [(ngModel)]="editUserModel.currentPassword"
+          #currentPassword="ngModel"
+          [required]="!!editUserModel.updatedPassword"
+        />
+        @if(currentPassword.invalid && currentPassword.touched){
+        <div class="error">
+          @if(currentPassword.errors?.['required']){
+          <span>This field is required if you typed in your new password</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="new-password"
+          >New password (Optionally change password)</label
+        >
+        <input
+          type="password"
+          name="new-password"
+          id="edit-modal-new-password"
+          [(ngModel)]="editUserModel.updatedPassword"
+          #password="ngModel"
+          minlength="8"
+          [required]="!!editUserModel.currentPassword"
+        />
+        @if(password.invalid && password.touched){
+        <div class="error">
+          @if(password.errors?.['minlength']){
+          <span>New password should be at least 8 characters</span>
+          } @else if(password.errors?.['required']){
+          <span
+            >This field is required if you typed in your current password</span
+          >
+          }
+        </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="modal-expected-calories">Expected calories per day</label>
+        <input
+          type="text"
+          name="modal-expected-calories"
+          id="edit-modal-calories"
+          [(ngModel)]="editUserModel.expectedCaloriesPerDay"
+          #exCalories="ngModel"
+          required
+        />
+        @if(exCalories.invalid && exCalories.touched){
+        <div class="error">
+          @if(exCalories.errors?.['required']){
+          <span>Expected Calories is required</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="main-btn" [disabled]="userForm.invalid">
+          Save
+        </button>
+        <button type="button" class="secondary-btn" (click)="closeModal()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}

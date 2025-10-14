@@ -17,6 +17,7 @@
 
   <div class="actions">
     <button (click)="openCreateMealModal()" class="main-btn">Add Meal</button>
+    <button (click)="openEditUserModal()" class="main-btn">Edit User</button>
   </div>
 
   <div class="filter-container">
@@ -83,3 +84,10 @@
   (save)="saveCreateMeal($event)"
   (close)="closeCreateMealModal()"
 ></app-create-meal-modal>
+
+<app-edit-user-by-user-modal
+  [isOpen]="isEditUserModalOpen"
+  [editUserModel]="editUserModel"
+  (close)="closeEditUserModal()"
+  (save)="updateUser($event)"
+></app-edit-user-by-user-modal>

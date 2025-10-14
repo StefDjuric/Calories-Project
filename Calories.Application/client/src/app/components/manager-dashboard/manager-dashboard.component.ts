@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../models/User';
-import { AccountService } from '../../services/account.service';
 import { CreateEditUserComponent } from '../shared/create-edit-user/create-edit-user.component';
 
 @Component({
