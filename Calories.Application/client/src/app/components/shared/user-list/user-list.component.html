@@ -1,0 +1,33 @@
+<table class="users-table">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Expected calories per day</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @if(users.length === 0){
+    <tr>
+      <td>No users created</td>
+    </tr>
+    } @for (user of users; track $index) {
+    <tr>
+      <td>{{ user.userName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.expectedCaloriesPerDay }}</td>
+      <td class="modal-actions">
+        <button class="main-btn" (click)="onEdit(user)">Edit</button>
+        <button
+          class="secondary-btn"
+          (click)="onDelete(user.id ? user.id : '')"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+
+    }
+  </tbody>
+</table>

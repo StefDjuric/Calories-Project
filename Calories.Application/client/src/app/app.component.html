@@ -1,1 +1,7 @@
+@if (accountService.accessToken()) {
+
+<div class="log-out">
+  <button class="secondary-btn" (click)="onLogOut()">Log Out</button>
+</div>
+}
 <router-outlet></router-outlet>

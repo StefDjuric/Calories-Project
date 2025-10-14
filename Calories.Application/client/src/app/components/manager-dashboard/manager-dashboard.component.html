@@ -1,0 +1,172 @@
+<div class="dashboard-container">
+  <h2>User Management</h2>
+
+  <button (click)="openCreateModal()" class="main-btn">Add User</button>
+
+  <div class="list-container">
+    <app-user-list
+      [users]="users()"
+      (deleteUser)="deleteUser($event)"
+      (editUser)="openEditModal($event)"
+    >
+    </app-user-list>
+  </div>
+</div>
+
+@if(isModalOpen){
+<div class="modal">
+  <div class="modal-content">
+    <h3>{{ isEditMode ? "Edit User" : "Add User" }}</h3>
+    <form (ngSubmit)="saveUser()" #userForm="ngForm" novalidate>
+      @if(isEditMode){
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="modal-username"
+          [(ngModel)]="editUserModel.userName"
+          #username="ngModel"
+          required
+          minlength="3"
+        />
+        @if(username.invalid && username.touched){
+        <div class="error">
+          @if(username.errors?.['required']){
+          <span>Username is required</span>
+          } @else if (username.errors?.['minlength']) {
+          <span>Username should be at least 3 characters long</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="modal-email"
+          [(ngModel)]="editUserModel.email"
+          #email="ngModel"
+          required
+          email
+        />
+        @if(email.invalid && email.touched){
+        <div class="error">
+          @if(email.errors?.['required']){
+          <span>Email is required</span>
+          } @else if (email.errors?.['email']) {
+          <span>Email is invalid</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="password">Edit password (Optional)</label>
+        <input
+          type="password"
+          name="password"
+          id="modal-password"
+          [(ngModel)]="editUserModel.updatedPassword"
+          #password="ngModel"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="modal-expected-calories">Expected calories per day</label>
+        <input
+          type="text"
+          name="modal-expected-calories"
+          id="modal-calories"
+          [(ngModel)]="editUserModel.expectedCaloriesPerDay"
+          #exCalories="ngModel"
+          required
+        />
+        @if(exCalories.invalid && exCalories.touched){
+        <div class="error">
+          @if(exCalories.errors?.['required']){
+          <span>Expected Calories is required</span>
+          }
+        </div>
+        }
+      </div>
+      } @else {
+      <div class="form-group">
+        <label for="create-username">Username</label>
+        <input
+          type="text"
+          name="create-username"
+          id="create-username"
+          [(ngModel)]="newUserModel.userName"
+          #createUsername="ngModel"
+          required
+          minlength="3"
+        />
+        @if(createUsername.invalid && createUsername.touched){
+        <div class="error">
+          @if(createUsername.errors?.['required']){
+          <span>Username is required</span>
+          } @else if (createUsername.errors?.['minlength']) {
+          <span>Username should be at least 3 characters long</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="create-email">Email</label>
+        <input
+          type="email"
+          name="create-email"
+          id="create-email"
+          [(ngModel)]="newUserModel.email"
+          #createEmail="ngModel"
+          required
+          email
+        />
+        @if(createEmail.invalid && createEmail.touched){
+        <div class="error">
+          @if(createEmail.errors?.['required']){
+          <span>Email is required</span>
+          } @else if (createEmail.errors?.['email']) {
+          <span>Email is invalid</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="create-password">Password</label>
+        <input
+          type="password"
+          name="create-password"
+          id="create-password"
+          [(ngModel)]="newUserModel.password"
+          #password="ngModel"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="create-role">Role</label>
+        <select
+          [(ngModel)]="newUserModel.role"
+          name="create-role"
+          id="create-role"
+        >
+          <option value="User">User</option>
+          <option value="User Manager">User Manager</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+      }
+
+      <div class="modal-actions">
+        <button type="submit" class="main-btn" [disabled]="userForm.invalid">
+          Save
+        </button>
+        <button type="button" class="secondary-btn" (click)="closeModal()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}

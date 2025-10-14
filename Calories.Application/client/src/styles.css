@@ -107,6 +107,21 @@ input:focus {
   margin-top: 0.3rem;
 }
 
+select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+
+select:focus {
+  border-color: var(--primary-teal);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+}
+
 .modal {
   position: fixed;
   top: 0;

@@ -31,6 +31,8 @@ export class LoginComponent {
       next: (_) => {
         if (this.accountService.getRoleFromToken() === 'User')
           this.router.navigateByUrl('/user-dashboard');
+        else if (this.accountService.getRoleFromToken() === 'User Manager')
+          this.router.navigateByUrl('/manager-dashboard');
 
         this.toastr.success('Successfully logged in');
       },

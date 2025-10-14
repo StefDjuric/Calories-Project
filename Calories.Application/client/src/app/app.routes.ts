@@ -5,6 +5,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { ManagerDashboardComponent } from './components/manager-dashboard/manager-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,6 +16,12 @@ export const routes: Routes = [
     component: UserDashboardComponent,
     canActivate: [authGuard, roleGuard],
     data: { roles: ['User'] },
+  },
+  {
+    path: 'manager-dashboard',
+    component: ManagerDashboardComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['User Manager'] },
   },
 
   { path: '**', redirectTo: '' },
