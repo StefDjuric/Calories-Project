@@ -16,13 +16,9 @@ export class MealsListComponent {
   private mealService = inject(MealsService);
   private toastr = inject(ToastrService);
   @Input() meals: Meal[] = [];
-  // @Output() editMeal = new EventEmitter<number>();
   @Output() deleteMeal = new EventEmitter<number>();
+  @Output() mealEdited = new EventEmitter<void>();
   selectedMeal: Meal | null = null;
-
-  // onEdit(id: number) {
-  //   this.editMeal.emit(id);
-  // }
 
   onDelete(id: number) {
     this.deleteMeal.emit(id);
@@ -58,7 +54,7 @@ export class MealsListComponent {
     this.mealService.editMeal(this.selectedMeal.id, payload).subscribe({
       next: (_) => {
         this.toastr.success('Successfully updated meal');
-        this.loadMeals();
+        this.mealEdited.emit();
         this.closeEditModal();
       },
       error: (err) => this.toastr.error(err.error),

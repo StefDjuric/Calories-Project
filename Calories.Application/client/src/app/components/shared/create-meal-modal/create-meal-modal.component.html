@@ -1,0 +1,94 @@
+@if (isOpen) {
+<div class="modal">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Add Meal</h3>
+    <form #createForm="ngForm" (ngSubmit)="saveMeal()">
+      <div class="form-group">
+        <label for="desc">Meal description</label>
+        <input
+          type="text"
+          name="desc"
+          id="createDesc"
+          [(ngModel)]="mealModel.mealDescription"
+          #description="ngModel"
+          required
+        />
+        @if (description.invalid && description.touched) {
+        <div class="error">
+          @if(description.errors?.['required']){
+          <span>Meal description field is required</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="cals">Meal calories</label>
+        <input
+          type="number"
+          name="cals"
+          id="createCals"
+          [(ngModel)]="mealModel.mealCalories"
+          #calories="ngModel"
+          required
+          min="1"
+        />
+        @if (calories.invalid && calories.touched) {
+        <div class="error">
+          @if(calories.errors?.['required']){
+          <span>Meal calories field is required</span>
+          } @else if(calories.errors?.['min']){
+          <span>Meal should have at least 1 calorie</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="date">Meal Date</label>
+        <input
+          type="date"
+          name="date"
+          id="createDate"
+          [(ngModel)]="mealModel.mealDate"
+          #date="ngModel"
+          required
+        />
+        @if (date.invalid && date.touched) {
+        <div class="error">
+          @if(date.errors?.['required']){
+          <span>Meal date field is required</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="time">Meal Time</label>
+        <input
+          type="time"
+          name="time"
+          id="createTime"
+          [(ngModel)]="mealModel.mealTime"
+          #time="ngModel"
+          required
+        />
+        @if (time.invalid && time.touched) {
+        <div class="error">
+          @if(time.errors?.['required']){
+          <span>Meal time field is required</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="main-btn" [disabled]="createForm.invalid">
+          Add
+        </button>
+        <button type="button" class="secondary-btn" (click)="closeModal()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}

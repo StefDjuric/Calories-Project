@@ -5,17 +5,17 @@ import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../models/User';
 import { AccountService } from '../../services/account.service';
+import { CreateEditUserComponent } from '../shared/create-edit-user/create-edit-user.component';
 
 @Component({
   selector: 'app-manager-dashboard',
   standalone: true,
-  imports: [UserListComponent, FormsModule],
+  imports: [UserListComponent, FormsModule, CreateEditUserComponent],
   templateUrl: './manager-dashboard.component.html',
   styleUrl: './manager-dashboard.component.css',
 })
 export class ManagerDashboardComponent implements OnInit {
   private userService = inject(UserService);
-  private accountService = inject(AccountService);
   private toastr = inject(ToastrService);
 
   users = signal<User[]>([]);
@@ -65,37 +65,18 @@ export class ManagerDashboardComponent implements OnInit {
   openEditModal(user: User) {
     this.isModalOpen = true;
     this.isEditMode = true;
-    this.selectedUser = user;
     this.editUserModel = { ...user };
   }
 
   closeModal() {
     this.isModalOpen = false;
-    this.selectedUser = null;
   }
 
-  saveUser() {
-    if (this.isEditMode && this.selectedUser) {
-      if (!!this.selectedUser.id)
-        this.userService
-          .adminUpdateUser(this.editUserModel, this.selectedUser.id)
-          .subscribe({
-            next: (_) => {
-              this.toastr.success('Successfully edited user.');
-              this.loadUsers();
-              this.closeModal();
-            },
-            error: (err) => this.toastr.error(err.error),
-          });
+  saveUser(userData: any) {
+    if (this.isEditMode) {
+      this.updateUser(userData);
     } else {
-      this.userService.adminCreateUser(this.newUserModel).subscribe({
-        next: (_) => {
-          this.toastr.success('Successfully created new user.');
-          this.loadUsers();
-          this.closeModal();
-        },
-        error: (err) => this.toastr.error(err.error),
-      });
+      this.createUser(userData);
     }
   }
 
@@ -106,6 +87,28 @@ export class ManagerDashboardComponent implements OnInit {
       next: (_) => {
         this.toastr.success('Successfully deleted user.');
         this.loadUsers();
+      },
+      error: (err) => this.toastr.error(err.error),
+    });
+  }
+
+  createUser(userData: any) {
+    this.userService.adminCreateUser(userData).subscribe({
+      next: (_) => {
+        this.toastr.success('Successfully created new user.');
+        this.loadUsers();
+        this.closeModal();
+      },
+      error: (err) => this.toastr.error(err.error),
+    });
+  }
+
+  updateUser(userData: any) {
+    this.userService.adminUpdateUser(userData, userData.id).subscribe({
+      next: (_) => {
+        this.toastr.success('Successfully edited user.');
+        this.loadUsers();
+        this.closeModal();
       },
       error: (err) => this.toastr.error(err.error),
     });

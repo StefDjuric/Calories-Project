@@ -8,11 +8,12 @@ import { UserService } from '../../services/user.service';
 import { MealsListComponent } from '../shared/meals-list/meals-list.component';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import { CreateMealModalComponent } from '../shared/create-meal-modal/create-meal-modal.component';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [MealsListComponent, FormsModule, NgClass],
+  imports: [MealsListComponent, FormsModule, NgClass, CreateMealModalComponent],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.css',
 })
@@ -147,6 +148,7 @@ export class UserDashboardComponent implements OnInit {
         this.toastr.success('Meal deleted successfully.');
         this.meals.set(this.meals().filter((m) => m.id !== mealId));
         this.calculateTotalCalories();
+        this.calculateTodayCalories();
       },
       error: (err) => {
         this.toastr.error(err.error);
@@ -162,8 +164,8 @@ export class UserDashboardComponent implements OnInit {
     this.isModalOpen = false;
   }
 
-  saveCreateMeal() {
-    this.mealService.userCreateMeal(this.mealModel).subscribe({
+  saveCreateMeal(mealData: any) {
+    this.mealService.userCreateMeal(mealData).subscribe({
       next: (_) => {
         this.toastr.success('Successfully created meal.');
         this.loadMeals();
