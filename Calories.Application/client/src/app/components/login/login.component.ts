@@ -33,6 +33,8 @@ export class LoginComponent {
           this.router.navigateByUrl('/user-dashboard');
         else if (this.accountService.getRoleFromToken() === 'User Manager')
           this.router.navigateByUrl('/manager-dashboard');
+        else if (this.accountService.getRoleFromToken() === 'Admin')
+          this.router.navigateByUrl('/admin-dashboard');
 
         this.toastr.success('Successfully logged in');
       },

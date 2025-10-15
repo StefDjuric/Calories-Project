@@ -79,6 +79,31 @@
         </div>
         }
       </div>
+      @if (isAdminMealCreate) {
+      <div class="form-group">
+        <label for="user">Pick user for the meal</label>
+        <select
+          name="user"
+          id="user"
+          [(ngModel)]="mealModel.userId"
+          #userId="ngModel"
+          required
+        >
+          @for (user of users; track $index) {
+          <option [value]="user.id">
+            {{ user.userName }}
+          </option>
+          }
+        </select>
+        @if(userId.invalid && userId.touched){
+        <div class="error">
+          @if (userId.errors?.['required']) {
+          <span>User option is required</span>
+          }
+        </div>
+        }
+      </div>
+      }
 
       <div class="modal-actions">
         <button type="submit" class="main-btn" [disabled]="createForm.invalid">

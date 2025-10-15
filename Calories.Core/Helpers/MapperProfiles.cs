@@ -14,7 +14,10 @@ namespace Calories.Core.Helpers
     {
         public MapperProfiles() 
         {
-            CreateMap<Meal, MealDTO>().ReverseMap();
+            CreateMap<Meal, MealDTO>()
+                .ForMember(dto => dto.UserName, opt => opt.MapFrom(m => m.User.UserName))
+                .ReverseMap()
+                .ForMember(m => m.User, opt => opt.Ignore());
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<RegisterDTO, User>().ReverseMap();
             CreateMap<LoginDTO, User>().ReverseMap();

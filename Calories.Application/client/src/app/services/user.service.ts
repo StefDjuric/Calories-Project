@@ -18,6 +18,10 @@ export class UserService {
     return this.http.get<User[]>(`${this.baseUrl}/users/admin`);
   }
 
+  getAllUsersInUserRole() {
+    return this.http.get<User[]>(`${this.baseUrl}/users/admin/user-role`);
+  }
+
   adminCreateUser(model: User) {
     return this.http.post<User>(`${this.baseUrl}/users/admin`, model);
   }

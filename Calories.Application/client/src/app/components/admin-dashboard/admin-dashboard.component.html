@@ -1,0 +1,51 @@
+<div class="dashboard-container">
+  <h2>Admin Panel</h2>
+  <div class="management-container">
+    <div class="">
+      <h3>User management</h3>
+      <button (click)="openCreateModal()" class="main-btn">Add User</button>
+
+      <div class="list-container">
+        <app-user-list
+          [users]="users()"
+          (deleteUser)="deleteUser($event)"
+          (editUser)="openEditModal($event)"
+        >
+        </app-user-list>
+      </div>
+    </div>
+
+    <div class="meals">
+      <h3>Meal management</h3>
+      <div class="actions">
+        <button (click)="openCreateMealModal()" class="main-btn">
+          Add Meal
+        </button>
+      </div>
+
+      <app-meals-list
+        [meals]="meals()"
+        (deleteMeal)="deleteMeal($event)"
+        (mealEdited)="loadMeals()"
+        [isAdminComponent]="true"
+      ></app-meals-list>
+    </div>
+  </div>
+</div>
+
+<app-create-edit-user
+  [isOpen]="isModalOpen"
+  [isEditMode]="isEditMode"
+  [userModel]="isEditMode ? editUserModel : newUserModel"
+  (save)="saveUser($event)"
+  (close)="closeModal()"
+></app-create-edit-user>
+
+<app-create-meal-modal
+  [isOpen]="isCreateMealModelOpen"
+  [mealModel]="mealModel"
+  [isAdminMealCreate]="true"
+  [users]="usersInUserRole()"
+  (save)="saveCreateMeal($event)"
+  (close)="closeCreateMealModal()"
+></app-create-meal-modal>

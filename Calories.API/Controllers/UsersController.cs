@@ -38,6 +38,14 @@ namespace Calories.API.Controllers
             return Ok(_mapper.Map<UserDTO>(user));
         }
 
+        [HttpGet("admin/user-role")] // api/<Users>/admin/user-role
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
+        public async Task<ActionResult<List<UserDTO>>> AdminGetAllUsersInUserRole()
+        {
+            var users = await _userManager.GetUsersInRoleAsync("User");
+            return Ok(users);
+        }
+
         [HttpGet("admin")] // api/<Users>/admin
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User Manager, Admin")]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()

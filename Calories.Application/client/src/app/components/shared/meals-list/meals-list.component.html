@@ -7,7 +7,10 @@
   <div class="meal-card">
     <div class="meal-info">
       <h4>{{ meal.mealDescription }}</h4>
-      <p>{{ meal.mealCalories }}kcal</p>
+      @if(isAdminComponent){
+      <p>Username: {{ meal.userName }}</p>
+      }
+      <p>Calories: {{ meal.mealCalories }}kcal</p>
       <p>{{ meal.mealDate | date }} - {{ meal.mealTime }}</p>
     </div>
     <div class="meal-actions">

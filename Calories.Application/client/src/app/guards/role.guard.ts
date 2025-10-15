@@ -10,9 +10,6 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const allowedRoles = route.data['roles'] as string[];
   const userRole = accountService.getRoleFromToken();
 
-  console.log('User role from token:', userRole);
-  console.log('Allowed roles:', allowedRoles);
-
   if (userRole && allowedRoles.includes(userRole)) {
     return true;
   }

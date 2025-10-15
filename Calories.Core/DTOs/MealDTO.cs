@@ -13,6 +13,7 @@ namespace Calories.Core.DTOs
         public DateOnly? MealDate { get; set; }
         public TimeOnly? MealTime { get; set; }
         public string? MealDescription { get; set; }
+        public string? UserName { get; set; }
         public double? MealCalories { get; set; }
     }
 }

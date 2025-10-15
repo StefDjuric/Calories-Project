@@ -6,11 +6,13 @@ import { UserDashboardComponent } from './components/user-dashboard/user-dashboa
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { ManagerDashboardComponent } from './components/manager-dashboard/manager-dashboard.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { guestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: '', component: HomeComponent, canActivate: [guestGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+  { path: 'signup', component: SignupComponent, canActivate: [guestGuard] },
   {
     path: 'user-dashboard',
     component: UserDashboardComponent,
@@ -22,6 +24,12 @@ export const routes: Routes = [
     component: ManagerDashboardComponent,
     canActivate: [authGuard, roleGuard],
     data: { roles: ['User Manager'] },
+  },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['Admin'] },
   },
 
   { path: '**', redirectTo: '' },

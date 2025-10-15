@@ -16,6 +16,7 @@ export class MealsListComponent {
   private mealService = inject(MealsService);
   private toastr = inject(ToastrService);
   @Input() meals: Meal[] = [];
+  @Input() isAdminComponent: boolean = false;
   @Output() deleteMeal = new EventEmitter<number>();
   @Output() mealEdited = new EventEmitter<void>();
   selectedMeal: Meal | null = null;

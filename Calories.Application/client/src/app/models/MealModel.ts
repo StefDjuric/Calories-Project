@@ -4,4 +4,5 @@ export interface Meal {
   mealCalories: number;
   mealDate: string;
   mealTime: string;
+  userName?: string;
 }
