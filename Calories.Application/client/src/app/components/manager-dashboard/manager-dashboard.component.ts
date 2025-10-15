@@ -40,7 +40,7 @@ export class ManagerDashboardComponent implements OnInit {
   }
 
   loadUsers() {
-    return this.userService.getAllUsers().subscribe({
+    return this.userService.getAllUsersInUserRole().subscribe({
       next: (data) => {
         this.users.set(data);
       },
